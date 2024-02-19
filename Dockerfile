@@ -5,5 +5,5 @@ ADD mix* ./
 RUN mix do local.hex --force, local.rebar --force && mix deps.get && mix deps.compile
 ADD config config
 ADD lib lib
-RUN mix compile
-ENTRYPOINT mix run --no-halt
+RUN MIX_ENV=prod mix compile
+ENTRYPOINT MIX_ENV=prod mix run --no-halt
