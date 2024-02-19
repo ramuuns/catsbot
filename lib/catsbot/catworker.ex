@@ -8,6 +8,10 @@ defmodule CatWorker do
     now = DateTime.utc_now()
     midnight = DateTime.new!(Date.utc_today(), ~T[00:00:00], "Etc/UTC")
 
+    hour_offset = Application.fetch_env!(:catsbot, :hour_offset)
+
+    midnight = DateTime.add(midnight, hour_offset, :hour)
+
     hours = div(24, pics_per_day)
 
     seconds_until_next = find_time_until_next(midnight, hours, now)
