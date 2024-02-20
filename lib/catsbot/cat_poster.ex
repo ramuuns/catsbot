@@ -4,10 +4,12 @@ defmodule CatPoster do
 
     case File.ls!(cats_dir) do
       [] ->
+        IO.puts("no cats found :(")
         notify_no_cats()
 
       [image | _] ->
         full_image_path = "#{cats_dir}/#{image}"
+        IO.puts("will attempt to post #{full_image_path}")
         post_next_cat(full_image_path)
         File.rm!(full_image_path)
     end
@@ -59,6 +61,8 @@ defmodule CatPoster do
     url = "https://#{mastodon_host}/api/v2/media"
     resp = Req.post!(url, headers: headers, body: Multipart.body_stream(multipart))
 
+    resp |> IO.inspect()
+
     resp.body["id"]
   end
 
@@ -74,6 +78,8 @@ defmodule CatPoster do
     url = "https://#{mastodon_host}/api/v1/statuses"
 
     resp = Req.post!(url, headers: headers, json: data)
+
+    resp |> IO.inspect()
 
     resp
   end

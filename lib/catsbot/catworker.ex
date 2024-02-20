@@ -30,6 +30,7 @@ defmodule CatWorker do
   def handle_info(:post_next, state) do
     pics_per_day = Application.fetch_env!(:catsbot, :pics_per_day)
     hours = div(24, pics_per_day)
+    IO.puts("scheduling next in #{hours} hours")
     Process.send_after(self(), :post_next, 1000 * 60 * 60 * hours)
     CatPoster.post_next_cat()
     {:noreply, state}
