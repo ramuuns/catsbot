@@ -61,9 +61,13 @@ defmodule CatPoster do
     url = "https://#{mastodon_host}/api/v2/media"
     resp = Req.post!(url, headers: headers, body: Multipart.body_stream(multipart))
 
-    resp |> IO.inspect()
+    case resp.body do
+      %{"id" => id} -> id
+      _ -> 
+        resp |> IO.inspect()
+        raise "Failed to upload the image"
+    end
 
-    resp.body["id"]
   end
 
   def post_status_update(data) do
